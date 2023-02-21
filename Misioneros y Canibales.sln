@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MisionerosCanibales", "Misioneros y Canibales\MisionerosCanibales.csproj", "{1A944DA2-ED89-471A-85C7-4109F07ECF61}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5B288EF7-4E88-4348-AC55-CA62D1020F51} = {5B288EF7-4E88-4348-AC55-CA62D1020F51}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArbolBusqueda", "ArbolBusqueda\ArbolBusqueda.csproj", "{5B288EF7-4E88-4348-AC55-CA62D1020F51}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1A944DA2-ED89-471A-85C7-4109F07ECF61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A944DA2-ED89-471A-85C7-4109F07ECF61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A944DA2-ED89-471A-85C7-4109F07ECF61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A944DA2-ED89-471A-85C7-4109F07ECF61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B288EF7-4E88-4348-AC55-CA62D1020F51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B288EF7-4E88-4348-AC55-CA62D1020F51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B288EF7-4E88-4348-AC55-CA62D1020F51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B288EF7-4E88-4348-AC55-CA62D1020F51}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A81AE584-1436-476A-8780-8057A2B8F751}
+	EndGlobalSection
+EndGlobal
