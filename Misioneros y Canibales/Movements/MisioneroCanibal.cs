@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace MisionerosCanibales.Movimientos
 {
-    public class Canibal1 : IProcess<State>
+    public class MisioneroCanibal : IProcess<State>
     {
-        public Canibal1()
+        public MisioneroCanibal()
         {
-            Id = 3;
-            Name = "1 Canibal";
+            Id = 5;
+            Name = "1 Misionero 1 canibal";
         }
 
         public int Id { get; set; }
@@ -20,14 +20,22 @@ namespace MisionerosCanibales.Movimientos
 
         public State Exec(State state)
         {
-            //move right to left
+            //mover los de la izquierda
             if (state.Boat == State.BoatStates.Right)
             {
+                //move missionary
+                state.MissionariesRight = state.MissionariesRight - 1;
+                state.MissionariesLeft = state.MissionariesLeft + 1;
+
+                //move cannibal
                 state.CannibalsRight = state.CannibalsRight - 1;
                 state.CannibalsLeft = state.CannibalsLeft + 1;
             }
-            else //move left to right
+            else //mover los de la derecha
             {
+                state.MissionariesLeft = state.MissionariesLeft - 1;
+                state.MissionariesRight = state.MissionariesRight + 1;
+
                 state.CannibalsLeft = state.CannibalsLeft - 1;
                 state.CannibalsRight = state.CannibalsRight + 1;
             }
@@ -35,23 +43,6 @@ namespace MisionerosCanibales.Movimientos
             state.MoveBoat();
 
             return state;
-        }
-
-        public bool ValidateExec(State state)
-        {
-            //move right to left
-            if (state.Boat == State.BoatStates.Right)
-            {
-                if (state.CannibalsRight < 1)
-                    return false;
-            }
-            else //move left to right
-            {
-                if (state.CannibalsLeft < 1)
-                    return false;
-            }
-
-            return true;
         }
     }
 }

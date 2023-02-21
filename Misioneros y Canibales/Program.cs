@@ -1,24 +1,30 @@
 ﻿using ArbolBusqueda;
 using MisionerosCanibales;
+using MisionerosCanibales.Conditions;
 using MisionerosCanibales.Movimientos;
+using static MisionerosCanibales.State;
 
-var estadoInicial = new State(0,0,3,3,1);
-var estadoEsperado = new State(3,3,0,0,0);
+var estadoInicial = new State(0,0,3,3, BoatStates.Right);
+var estadoEsperado = new State(3,3,0,0, BoatStates.Left);
 
 //var movimientos = new List<IProcess<State>>();
 //movimientos.Add(new Canibales2());
 
 var movimientos = new List<IProcess<State>>()
 {
-    new Canibales2(),
-    new Canibal1(),
-    new Misionero1(),
-    new Misioneros2(),
+    new Cannibals2(),
+    new Cannibal1(),
+    new Missionary1(),
+    new Missionaries2(),
     new MisioneroCanibal()
 };
 
+var conditions = new List<ICondition<State>>()
+{
+    new Condition()
+};
 
-var arbol = new BusquedaProfundidad<State>(estadoInicial, movimientos, estadoEsperado, 10);
+var arbol = new BusquedaProfundidad<State>(estadoInicial, estadoEsperado, movimientos, conditions, 100000);
 var resultados = arbol.FindResult();
 
 foreach (var resultado in resultados)
@@ -45,7 +51,7 @@ foreach (var resultado in resultados)
                 break;
         }
     }
-    Console.WriteLine(texto);
+    Console.WriteLine(texto + " pasos: " + (resultado.Count - 1) + "\n");
 }
 
 Console.ReadLine();
