@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ArbolBusqueda
 {
-    public class BusquedaProfundidad<T> where T : ICloneable, IComparable
+    public class BusquedaProfundidad<T> where T : IState
     {
-        public BusquedaProfundidad(T initialState, T expectedState, List<IProcess<T>> process,  List<ICondition<T>> conditions, int maxDeep) {
+        public BusquedaProfundidad(T initialState, T expectedState, int maxDeep) {
             //Define the initial/head node
             var initialNode = new Node<T>(initialState);
             this.Head = initialNode;
@@ -17,8 +17,6 @@ namespace ArbolBusqueda
             this.ExpectedResult = expectedState;
 
             //save the list of posible process
-            this.ProcessList = process;
-            this.ConditionList = conditions;
             this.MaxDeep = maxDeep;
 
             this.PosibleResult = new List<Node<T>>();
@@ -26,30 +24,31 @@ namespace ArbolBusqueda
 
 
         internal Node<T> Head { get; set; }
-        internal List<IProcess<T>> ProcessList { get; }
-        internal List<ICondition<T>> ConditionList { get; }
         internal T ExpectedResult { get; }
         internal List<Node<T>> PosibleResult { get; set; }
         internal int MaxDeep { get; set; }
 
         //create the tree and find all posible results
-        public List<List<int>>? FindResult()
+        public List<List<Resultado>>? FindResult()
         {
             BuildTree(Head);
 
-            var results = new List<List<int>>();
+            var results = new List<List<Resultado>>();
             foreach (var node in PosibleResult)
             {
-                var result = new List<int>();
+                var resultList = new List<Resultado>();
 
                 var prevNode = node;
-                while(prevNode != null)
+                var iterator = 0;
+                while(prevNode.PrevNode != null)
                 {
-                    result.Add(prevNode.Process);
+                    iterator++;
+                    var result = new Resultado(prevNode.Process, iterator, prevNode.ProcessName);
+                    resultList.Add(result);
                     prevNode = prevNode.PrevNode;
                 }
 
-                results.Add(result);
+                results.Add(resultList);
             }
 
             return results;
@@ -83,38 +82,48 @@ namespace ArbolBusqueda
 
             var nodes = new List<Node<T>>();
 
-            foreach (var process in ProcessList)
+            for(int i = 0; i < node.State.Actions; i++)
             {
-                //if the move is not valid continue
-                //var isValid = process.ValidateExec(node.State);
+                T newState = (T)node.State.Clone();
 
-                //execute the procces 
-                var newState = process.Exec((T)node.State.Clone());
-
-                //if the state is not valid dont add the node
-                var isValid = true;
-                foreach (var condition in ConditionList)
-                {
-                    if(!condition.IsStateValid(newState))
-                        isValid = false;
-                }
-                if (!isValid)
+                //si no se puede aplicar la accion continua la siguiente
+                if (!newState.ExecAction(i))
                     continue;
 
-                //create the new node with the new state
-                var newNode = new Node<T>(newState, node, process.Id, process.Name);
+                var processName = node.State.GetActionName(i);
+                var newNode = new Node<T>(newState, node, i, processName);
 
                 //validate if the state if not in the previus steps
-                if (!newNode.validatePreviusSteps())
+                if (StateIsInPreviousSteps(newNode))
                     continue; //dont add the node
 
-                //if pass the prevs validations add the new node
+                //validate is state is valid
+                if (!newNode.State.IsStateValid())
+                    continue; //dont add the node
+
                 nodes.Add(newNode);
             }
 
             node.NextNodes = nodes;
 
             return true;
+        }
+
+        private bool StateIsInPreviousSteps(Node<T> node)
+        {
+            if (node == null)
+                return false;
+
+            var prevNode = node.PrevNode;
+            while(prevNode != null)
+            {
+                if (node.State.CompareTo(prevNode.State) == 1)
+                {
+                    return true;
+                }
+                prevNode = prevNode.PrevNode;
+            }
+            return false;
         }
 
         private bool CheckDeep(Node<T> node)

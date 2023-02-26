@@ -1,14 +1,18 @@
-﻿using ArbolBusqueda;
-using MisionerosCanibales;
-using static MisionerosCanibales.State;
+﻿// See https://aka.ms/new-console-template for more information
+//Console.WriteLine("Hello, World!");
 
-var estadoInicial = new State(0,0,3,3, BoatStates.Right);
-var estadoEsperado = new State(3,3,0,0, BoatStates.Left);
+using ArbolBusqueda;
+using Baldes;
 
-//var movimientos = new List<IProcess<State>>();
-//movimientos.Add(new Canibales2());
+var estadoInicial = new State(new Buckect(6), new Buckect(8));
 
-var arbol = new BusquedaProfundidad<State>(estadoInicial, estadoEsperado, 100000);
+var valde6 = new Buckect(6);
+var valde8 = new Buckect(8);
+valde6.Value = 0;
+valde8.Value = 4;
+var estadoEsperado = new State(valde6, valde8);
+
+var arbol = new BusquedaProfundidad<State>(estadoInicial, estadoEsperado, 2000);
 var resultados = arbol.FindResult();
 
 foreach (var resultado in resultados)

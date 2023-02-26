@@ -1,6 +1,6 @@
 ﻿namespace ArbolBusqueda
 {
-    internal class Node<T> where T : ICloneable, IComparable
+    internal class Node<T> where T : IState
     {
 
         internal Node(T Initialstate)
@@ -28,24 +28,7 @@
         public string ProcessName { get; set; }
 
 
-        //the sons nodes
         internal List<Node<T>>? NextNodes { get; set; }
 
-        //returns true if there is not similar nodes on father leafs
-        internal bool validatePreviusSteps()
-        {
-            var prevNode = PrevNode;
-
-            while (prevNode != null)
-            {
-                if (State.CompareTo(prevNode.State) == 1)
-                {
-                    return false;
-                }
-                prevNode = prevNode.PrevNode;
-            }
-
-            return true;
-        }
     }
 }
